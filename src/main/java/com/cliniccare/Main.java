@@ -1,6 +1,7 @@
 package com.cliniccare;
 
 import com.cliniccare.dao.AppointmentDAO;
+import com.cliniccare.dao.PatientDAO;
 import com.cliniccare.database.DatabaseInitializer;
 import com.cliniccare.exceptions.ClinicCareException;
 import com.cliniccare.model.Appointment;
@@ -28,7 +29,8 @@ public class Main {
                 System.out.println("Today's appointments: " + data.todayAppointments().size());
                 System.out.println("Pending appointments: " + data.pendingAppointments());
                 System.out.println("Completed appointments: " + data.completedAppointments());
-                System.out.println("Patient, doctor and billing totals: awaiting integration");
+                System.out.println("Total patients: " + data.totalPatients());
+                System.out.println("Doctor and billing totals: awaiting integration");
                 System.out.println("MEMBER 6 STAGE 2 DATABASE READ PASSED");
                 return;
             }
@@ -72,7 +74,7 @@ public class Main {
         todayAppointments.sort(Comparator.comparing(Appointment::getAppointmentTime)
                 .thenComparingInt(Appointment::getAppointmentId));
         // null represents unavailable metrics, never a fabricated zero.
-        return new DashboardPanel.Summary(today, null, null, pending, completed, null,
+        return new DashboardPanel.Summary(today, new PatientDAO().findAll().size(), null, pending, completed, null,
                 List.copyOf(todayAppointments));
     }
 

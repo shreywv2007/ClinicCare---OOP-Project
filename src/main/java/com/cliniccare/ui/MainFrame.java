@@ -20,6 +20,7 @@ public class MainFrame extends JFrame {
     private final JPanel content = new JPanel(cardLayout);
     private final Map<String, JButton> navigation = new LinkedHashMap<>();
     private final DashboardPanel dashboard;
+    private final PatientPanel patients;
 
     public MainFrame(DashboardPanel.SummaryLoader loader) {
         super("ClinicCare | Clinic Management");
@@ -33,7 +34,8 @@ public class MainFrame extends JFrame {
         dashboard = new DashboardPanel(loader);
         content.add(dashboard, "Dashboard");
         // Temporary pages are clearly marked. No teammate classes are duplicated.
-        content.add(waitingPage("Patients", "Patient module not integrated yet."), "Patients");
+        patients = new PatientPanel();
+        content.add(patients, "Patients");
         content.add(waitingPage("Doctors", "Doctor module not integrated yet."), "Doctors");
         content.add(waitingPage("Appointments", "Appointment screen requires patient and doctor modules."), "Appointments");
         content.add(waitingPage("Billing", "Billing module not integrated yet."), "Billing");
@@ -95,6 +97,8 @@ public class MainFrame extends JFrame {
         }
         if ("Dashboard".equals(page)) {
             dashboard.refreshData();
+        } else if ("Patients".equals(page)) {
+            patients.refresh();
         }
     }
 
